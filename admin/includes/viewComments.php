@@ -3,22 +3,25 @@
             <tr>
                 <th>Id</th>
                 <th>Author</th>
-                <th>Title</th>
-                <th>Category</th>
+                <th>Comment</th>
+                <th>Email</th>
                 <th>Status</th>
-                <th>Image</th>
-                <th>Tags</th>
-                <th>Comments</th>
+                <th>In Response to</th>
                 <th>Date</th>
+                <th>Approve</th>
+                <th>Unapprove</th>
                 <th>Delete</th>
-                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
                                 
-<?php displayPosts();?>
+<?php displayComments(); ?>
                                 
         </tbody>
     </table>
 
-<?php deletePosts(); ?>
+<?php deleteComments(); ?>
+
+<?php unapproveComments(); ?>
+
+<?php approveComments(); ?>

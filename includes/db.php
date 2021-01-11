@@ -2,10 +2,6 @@
 
 include "dbConfig.php";
 
-// foreach($db as $key => $val){
-//     define(strtoupper($key),$val);
-// }
-
 foreach($db as $key  =>  $value)
 {
     if(!defined(strtoupper($key))){ define(strtoupper($key), $value); }
