@@ -36,12 +36,9 @@ switch($source)
         include "includes/addPosts.php";
         break;
 
-    case 'editPosts':
-        include "includes/editPosts.php";
-        break;
 
     default:
-    include "includes/viewPosts.php";
+    include "includes/viewComments.php";
     break;
 }
 
