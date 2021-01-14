@@ -1,4 +1,169 @@
 <?php
+//change to admin
+function changeToAdmin()
+{
+    global $conn;
+    if(isset($_GET['change_to_admin']))
+    {
+        $user_id = $_GET['change_to_admin'];
+
+        $query = "UPDATE users SET user_role = 'Admin' WHERE user_id = {$user_id} ";
+
+        $change_to_admin_query = mysqli_query($conn,$query);
+
+        if(!$change_to_admin_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+
+        header("Location: users.php "); 
+        exit;
+    }
+}
+
+//change to subscriber
+function changeToSubscriber()
+{
+    global $conn;
+    if(isset($_GET['change_to_sub']))
+    {
+        $user_id = $_GET['change_to_sub'];
+
+        $query = "UPDATE users SET user_role = 'Subscriber' WHERE user_id = {$user_id} ";
+
+        $change_to_subscriber_query = mysqli_query($conn,$query);
+
+        if(!$change_to_subscriber_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+
+        header("Location: users.php "); 
+        exit;
+    }
+}
+
+
+//delete users
+function deleteUsers()
+{
+    global $conn;
+    if(isset($_GET['delete']))
+    {
+        $user_id = $_GET['delete'];
+
+        $query = "DELETE FROM users WHERE user_id = {$user_id} ";
+
+        $delete_users_query = mysqli_query($conn,$query);
+
+
+        if(!$delete_users_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+
+        header("Location: users.php "); 
+        exit;
+    }
+}
+
+
+//add users
+function addUsers()
+{
+    global $conn;
+    if(isset($_POST['create_user']))
+    {
+        $user_id = $_POST['user_id'];
+        $user_firstname = $_POST['user_firstname'];
+        $user_lastname = $_POST['user_lastname'];
+        $user_role = $_POST['user_role'];
+        $username = $_POST['username'];
+        $user_email = $_POST['user_email'];
+        $user_password = $_POST['user_password'];
+
+        // $post_image = $_FILES['post_image']['name'];
+        // $post_image_temp = $_FILES['post_image']['tmp_name'];
+
+
+
+        // move_uploaded_file($post_image_temp,"../images/$post_image" );
+
+        $query = "INSERT INTO users(user_firstname, user_lastname,
+        user_role, username, user_email, user_password) ";
+
+        $query .= "VALUES('{$user_firstname}','{$user_lastname}',
+        '{$user_role}','{$username}','{$user_email}','{$user_password}' ) ";
+
+        $create_user_query = mysqli_query($conn, $query);
+
+        if(!$create_user_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+        else{
+            echo "Added SUCCESSFULLY";
+        }
+
+        header("Location: users.php?source=addUsers "); 
+        exit;
+
+    }
+}
+
+
+//display users
+function displayUsers()
+{
+    global $conn;
+    $query = "SELECT * FROM users ORDER by user_id DESC ";
+    $select_users_query = mysqli_query($conn, $query);
+
+    while($row = mysqli_fetch_assoc($select_users_query))
+    {
+        $user_id = $row['user_id'];
+        $username = $row['username'];
+        $user_password = $row['user_password'];
+        $user_firstname = $row['user_firstname'];
+        $user_lastname = $row['user_lastname'];
+        $user_email = $row['user_email'];
+        $user_image = $row['user_image'];
+        $user_role = $row['user_role'];
+        
+
+        echo "<tr>";
+        echo "<td>$user_id</td>";
+        echo "<td>$username</td>";
+        echo "<td>$user_firstname</td>";
+        echo "<td>$user_lastname</td>";
+        echo "<td>$user_email</td>";
+        echo "<td>$user_role</td>";
+        echo "<td><a href='users.php?change_to_admin={$user_id}'>Admin</a></td>";
+        echo "<td><a href='users.php?change_to_sub={$user_id}'>Subscriber</a></td>";
+        echo "<td><a href='users.php?delete={$user_id}'>Delete</a></td>";
+        echo "<td><a href='users.php?source=editUsers&edit={$user_id}'>Edit</a></td>";
+        echo "</tr>";   
+
+
+        // $query = "SELECT * FROM posts WHERE post_id = {$comment_post_id} ";
+
+        // $select_post_id_query = mysqli_query($conn, $query);
+
+        // while($row = mysqli_fetch_assoc($select_post_id_query))
+        // {
+        //     $post_id = $row['post_id'];
+        //     $post_title = $row['post_title'];
+
+        //     echo "<td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
+        // }
+        // echo "<td>$comment_date</td>";
+
+         
+
+    }
+}
+
+
 //approving comments
 function approveComments()
 {
@@ -49,7 +214,7 @@ function deleteComments()
     global $conn;
     if(isset($_GET['delete']))
     {
-        // $post_id = $_GET['p_id'];
+        $post_id = $_GET['p_id'];
         $comment_id = $_GET['delete'];
 
         $query = "DELETE FROM comments WHERE comment_id = {$comment_id} ";
@@ -62,13 +227,15 @@ function deleteComments()
             die("QUERY FAILED" . mysqli_error($conn));
         }
 
-        // $query = "UPDATE posts SET post_comment_count= post_comment_count - 1 ";
-        // $query .= "WHERE post_id = {$post_id} ";
+        $query = "UPDATE posts SET post_comment_count= post_comment_count - 1 ";
+        $query .= "WHERE post_id = {$post_id} ";
 
         header("Location: comments.php "); 
         exit;
     }
 }
+
+
 //display comments
 function displayComments()
 {
@@ -220,11 +387,64 @@ function deletePosts()
     }
 }
 
+//add posts
+function addPosts()
+{
+    global $conn;
+    if(isset($_POST['create_post']))
+    {
+        $post_title = $_POST['post_title'];
+        $post_author = $_POST['post_author'];
+        $post_category_id = $_POST['post_category'];
+        $post_status = $_POST['post_status'];
+
+        $post_image = $_FILES['post_image']['name'];
+        $post_image_temp = $_FILES['post_image']['tmp_name'];
+
+        $post_tags = $_POST['post_tags'];
+        $post_content = $_POST['post_content'];
+        $post_date = date('d-m-y');
+
+
+        move_uploaded_file($post_image_temp,"../images/$post_image" );
+
+        $query = "INSERT INTO posts(post_category_id, post_title, post_author,
+        post_date, post_image, post_content, post_tags, post_status) ";
+
+        $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}',now(),'{$post_image}',
+        '{$post_content}','{$post_tags}','{$post_status}' ) ";
+
+        $add_posts_query = mysqli_query($conn, $query);
+
+        header("Location: posts.php?source=addPosts "); 
+        exit;
+
+        if(!$add_posts_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+        else{
+            echo "Added SUCCESSFULLY";
+        }
+
+    }
+}
+
 //displayposts
 function displayPosts()
 {
     global $conn;
     $query = "SELECT * FROM posts";
+    // $query = "SELECT *, count(comment_id) as comments 
+    //     FROM posts LEFT JOIN comments 
+    //     on  posts.post_id = comments.comment_post_id 
+    //     GROUP BY comment_post_id
+    // ";
+    // $comments_and_posts = mysqli_query($conn, $query);
+    // // print_r($comments_and_posts);
+    // // exit();
+
+
     $select_posts_query = mysqli_query($conn, $query);
 
     while($row = mysqli_fetch_assoc($select_posts_query))
