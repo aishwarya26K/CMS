@@ -61,6 +61,7 @@ while($row = mysqli_fetch_assoc($select_all_posts_query))
 
 
                 <!-- Blog Comments -->
+<!-- add comments  -->
 <?php
 
 global $conn;
@@ -175,3 +176,5 @@ while($row = mysqli_fetch_assoc($select_comment_query))
 
         <!-- Footer -->
 <?php include "includes/footer.php"; ?>   
+
+
