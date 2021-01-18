@@ -6,6 +6,7 @@
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Role</th>
                 <!-- <th>Date</th> -->
             </tr>

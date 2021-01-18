@@ -72,31 +72,53 @@ if(isset($_POST['post_comment']))
     $comment_email = $_POST['comment_email'];
     $comment_content = $_POST['comment_content'];
 
-    $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
-    $query .= "VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now()) ";
-
-    $create_comment_query = mysqli_query($conn, $query);
-
-    if(!$create_comment_query)
+    if($comment_author == "" || empty($comment_author))
     {
-        die("QUERY FAILED" . mysqli_error($conn));
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($comment_email == "" || empty($comment_email))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($comment_content == "" || empty($comment_content))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    else
+    {
+
+        $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
+        $query .= "VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unapproved', now()) ";
+    
+        $create_comment_query = mysqli_query($conn, $query);
+    
+        if(!$create_comment_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+    
+    
+        //comment count query
+        $query = "UPDATE posts SET post_comment_count= post_comment_count + 1 ";
+        $query .= "WHERE post_id = {$the_post_id} ";
+    
+        $comment_count_query = mysqli_query($conn,$query);
+    
+        if(!$comment_count_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+    
+        $query_string = '?'.$_SERVER['QUERY_STRING'];
+        $uri = $_SERVER['PHP_SELF'] . $query_string;
+        header("Location: " . $uri); exit;
+
     }
 
 
-    //comment count query
-    $query = "UPDATE posts SET post_comment_count= post_comment_count + 1 ";
-    $query .= "WHERE post_id = {$the_post_id} ";
-
-    $comment_count_query = mysqli_query($conn,$query);
-
-    if(!$comment_count_query)
-    {
-        die("QUERY FAILED" . mysqli_error($conn));
-    }
-
-    $query_string = '?'.$_SERVER['QUERY_STRING'];
-    $uri = $_SERVER['PHP_SELF'] . $query_string;
-    header("Location: " . $uri); exit;
 }
 
 ?>

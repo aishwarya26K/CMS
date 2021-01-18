@@ -33,23 +33,58 @@ if(isset($_POST['edit_user']))
     $user_role = $_POST['user_role'];
     
 
-    $query = "UPDATE users SET ";
-    $query .= "username = '{$username}', ";
-    $query .= "user_password = '{$user_password}', ";
-    $query .= "user_firstname = '{$user_firstname}', ";
-    $query .= "user_lastname = '{$user_lastname}', ";
-    $query .= "user_email = '{$user_email}', ";
-    $query .= "user_role = '{$user_role}' ";
-    $query .= "WHERE user_id = {$user_id} ";
-
-    $update_user_query = mysqli_query($conn, $query);
-
-    if(!$update_user_query)
+    if($user_firstname == "" || empty($user_firstname))
     {
-        die("QUERY FAILED" . mysqli_error($conn));
+        echo "this field should not be empty"."<br>";
     }
-    else{
-        echo "Updated succesfully";
+
+    if($user_lastname == "" || empty($user_lastname))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($user_role == "" || empty($user_role))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($username == "" || empty($username))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($user_email == "" || empty($user_email))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($user_password == "" || empty($user_password))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    else
+    {
+
+        $query = "UPDATE users SET ";
+        $query .= "username = '{$username}', ";
+        $query .= "user_password = '{$user_password}', ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_email = '{$user_email}', ";
+        $query .= "user_role = '{$user_role}' ";
+        $query .= "WHERE user_id = {$user_id} ";
+
+        $update_user_query = mysqli_query($conn, $query);
+
+        if(!$update_user_query)
+        {
+            die("QUERY FAILED" . mysqli_error($conn));
+        }
+        else{
+            echo "Updated succesfully";
+        }
+
     }
 
 }
