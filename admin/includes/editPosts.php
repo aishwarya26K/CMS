@@ -36,6 +36,36 @@ if(isset($_POST['update_post']))
     
     move_uploaded_file($post_image_temp, "../images/$post_image" );
 
+    if($post_title == "" || empty($post_title))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($post_category_id == "" || empty($post_category_id))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($post_author == "" || empty($post_author))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($post_status == "" || empty($post_status))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($post_tags == "" || empty($post_tags))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
+    if($post_content == "" || empty($post_content))
+    {
+        echo "this field should not be empty"."<br>";
+    }
+
     if(empty($post_image))
     {
         $query = "SELECT * FROM posts WHERE post_id = {$the_post_id} ";
@@ -47,28 +77,30 @@ if(isset($_POST['update_post']))
         }
     }
 
-
-    $query = "UPDATE posts SET ";
-    $query .= "post_title = '{$post_title}', ";
-    $query .= "post_category_id = '{$post_category_id}', ";
-    $query .= "post_date = now(), ";
-    $query .= "post_author = '{$post_author}', ";
-    $query .= "post_status = '{$post_status}', ";
-    $query .= "post_tags = '{$post_tags}', ";
-    $query .= "post_content = '{$post_content}', ";
-    $query .= "post_image = '{$post_image}' ";
-    $query .= "WHERE post_id = {$post_id} ";
-
-    $update_post_query = mysqli_query($conn, $query);
-
-    if(!$update_post_query)
+    else
     {
-        die("QUERY FAILED" . mysqli_error_list($conn));
-    }
-    else{
-        echo "Updated succesfully";
-    }
 
+        $query = "UPDATE posts SET ";
+        $query .= "post_title = '{$post_title}', ";
+        $query .= "post_category_id = '{$post_category_id}', ";
+        $query .= "post_date = now(), ";
+        $query .= "post_author = '{$post_author}', ";
+        $query .= "post_status = '{$post_status}', ";
+        $query .= "post_tags = '{$post_tags}', ";
+        $query .= "post_content = '{$post_content}', ";
+        $query .= "post_image = '{$post_image}' ";
+        $query .= "WHERE post_id = {$post_id} ";
+    
+        $update_post_query = mysqli_query($conn, $query);
+    
+        if(!$update_post_query)
+        {
+            die("QUERY FAILED" . mysqli_error_list($conn));
+        }
+        else{
+            echo "Updated succesfully";
+        }
+    }
 }
 ?>
 

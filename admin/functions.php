@@ -89,25 +89,59 @@ function addUsers()
 
         // move_uploaded_file($post_image_temp,"../images/$post_image" );
 
-        $query = "INSERT INTO users(user_firstname, user_lastname,
-        user_role, username, user_email, user_password) ";
-
-        $query .= "VALUES('{$user_firstname}','{$user_lastname}',
-        '{$user_role}','{$username}','{$user_email}','{$user_password}' ) ";
-
-        $create_user_query = mysqli_query($conn, $query);
-
-        if(!$create_user_query)
+        if($user_firstname == "" || empty($user_firstname))
         {
-            die("QUERY FAILED" . mysqli_error($conn));
+            echo "this field should not be empty"."<br>";
         }
-        else{
-            echo "Added SUCCESSFULLY";
+    
+        if($user_lastname == "" || empty($user_lastname))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+    
+        if($user_role == "" || empty($user_role))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+    
+        if($username == "" || empty($username))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+    
+        if($user_email == "" || empty($user_email))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+    
+        if($user_password == "" || empty($user_password))
+        {
+            echo "this field should not be empty"."<br>";
         }
 
-        header("Location: users.php?source=addUsers "); 
-        exit;
+        else
+        {
 
+            $query = "INSERT INTO users(user_firstname, user_lastname,
+            user_role, username, user_email, user_password) ";
+    
+            $query .= "VALUES('{$user_firstname}','{$user_lastname}',
+            '{$user_role}','{$username}','{$user_email}','{$user_password}' ) ";
+    
+            $create_user_query = mysqli_query($conn, $query);
+    
+            if(!$create_user_query)
+            {
+                die("QUERY FAILED" . mysqli_error($conn));
+            }
+            else{
+                echo "Added SUCCESSFULLY";
+            }
+    
+            header("Location: users.php?source=addUsers "); 
+            exit;
+
+        }
     }
 }
 
@@ -137,6 +171,7 @@ function displayUsers()
         echo "<td>$user_firstname</td>";
         echo "<td>$user_lastname</td>";
         echo "<td>$user_email</td>";
+        echo "<td>$user_password</td>";
         echo "<td>$user_role</td>";
         echo "<td><a href='users.php?change_to_admin={$user_id}'>Admin</a></td>";
         echo "<td><a href='users.php?change_to_sub={$user_id}'>Subscriber</a></td>";
@@ -408,25 +443,63 @@ function addPosts()
 
         move_uploaded_file($post_image_temp,"../images/$post_image" );
 
-        $query = "INSERT INTO posts(post_category_id, post_title, post_author,
-        post_date, post_image, post_content, post_tags, post_status) ";
-
-        $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}',now(),'{$post_image}',
-        '{$post_content}','{$post_tags}','{$post_status}' ) ";
-
-        $add_posts_query = mysqli_query($conn, $query);
-
-        header("Location: posts.php?source=addPosts "); 
-        exit;
-
-        if(!$add_posts_query)
+        if($post_title == "" || empty($post_title))
         {
-            die("QUERY FAILED" . mysqli_error($conn));
-        }
-        else{
-            echo "Added SUCCESSFULLY";
+            echo "this field should not be empty"."<br>";
         }
 
+        if($post_category_id == "" || empty($post_category_id))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+
+        if($post_author == "" || empty($post_author))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+
+        if($post_status == "" || empty($post_status))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+
+        if(empty($post_image))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+
+        if($post_tags == "" || empty($post_tags))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+
+        if($post_content == "" || empty($post_content))
+        {
+            echo "this field should not be empty"."<br>";
+        }
+
+        else
+        {
+            $query = "INSERT INTO posts(post_category_id, post_title, post_author,
+            post_date, post_image, post_content, post_tags, post_status) ";
+
+            $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}',now(),'{$post_image}',
+            '{$post_content}','{$post_tags}','{$post_status}' ) ";
+
+            $add_posts_query = mysqli_query($conn, $query);
+
+            header("Location: posts.php?source=addPosts "); 
+            exit;
+
+            if(!$add_posts_query)
+            {
+                die("QUERY FAILED" . mysqli_error($conn));
+            }
+            else
+            {
+                echo "Added SUCCESSFULLY";
+            }
+        }
     }
 }
 
