@@ -74,7 +74,7 @@ function addUsers()
     global $conn;
     if(isset($_POST['create_user']))
     {
-        $user_id = $_POST['user_id'];
+        // $user_id = $_POST['user_id'];
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
         $user_role = $_POST['user_role'];
@@ -129,16 +129,15 @@ function addUsers()
             '{$user_role}','{$username}','{$user_email}','{$user_password}' ) ";
     
             $create_user_query = mysqli_query($conn, $query);
-    
+
+            echo "<div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'><p class='errorMsg'><strong>User added: </strong>" . " " . "<a href='users.php'>View users</a></p></div>";
+
             if(!$create_user_query)
             {
                 die("QUERY FAILED" . mysqli_error($conn));
             }
-            else{
-                echo "Added SUCCESSFULLY";
-            }
-    
-            header("Location: users.php?source=addUsers "); 
+
+            header("Location: users.php?source=addUsers ");
             exit;
 
         }
@@ -488,8 +487,7 @@ function addPosts()
 
             $add_posts_query = mysqli_query($conn, $query);
 
-            header("Location: posts.php?source=addPosts "); 
-            exit;
+            $the_post_id = mysqli_insert_id($conn);
 
             if(!$add_posts_query)
             {
@@ -497,69 +495,12 @@ function addPosts()
             }
             else
             {
-                echo "Added SUCCESSFULLY";
+                echo "<div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'><p class='errorMsg'><strong>Post Created. </strong>" . " " . "<a href='../post.php?p_id={$the_post_id}'>View Post</a> or <a href='posts.php'>Edit More Posts</a></p></div>";
             }
+
+            header("Location: posts.php?source=addPosts "); 
+            exit;
         }
-    }
-}
-
-//displayposts
-function displayPosts()
-{
-    global $conn;
-    $query = "SELECT * FROM posts";
-    // $query = "SELECT *, count(comment_id) as comments 
-    //     FROM posts LEFT JOIN comments 
-    //     on  posts.post_id = comments.comment_post_id 
-    //     GROUP BY comment_post_id
-    // ";
-    // $comments_and_posts = mysqli_query($conn, $query);
-    // // print_r($comments_and_posts);
-    // // exit();
-
-
-    $select_posts_query = mysqli_query($conn, $query);
-
-    while($row = mysqli_fetch_assoc($select_posts_query))
-    {
-        $post_id = $row['post_id'];
-        $post_author = $row['post_author'];
-        $post_title = $row['post_title'];
-        $post_category_id = $row['post_category_id'];
-        $post_status = $row['post_status'];
-        $post_image = $row['post_image'];
-        $post_tags = $row['post_tags'];
-        $post_comment_count = $row['post_comment_count'];
-        $post_date = $row['post_date'];
-
-        echo "<tr>";
-        echo "<td>$post_id</td>";
-        echo "<td>$post_author</td>";
-        echo "<td>$post_title</td>";
-
-        $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
-        $select_categories_id = mysqli_query($conn, $query);
-
-        while($row = mysqli_fetch_assoc($select_categories_id))
-        {
-            $cat_id = $row['cat_id'];
-            $cat_title = $row['cat_title'];
-
-
-        echo "<td>{$cat_title}</td>";
-
-
-        }
-
-        echo "<td>$post_status</td>";
-        echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
-        echo "<td>$post_tags</td>";
-        echo "<td>$post_comment_count</td>";
-        echo "<td>$post_date</td>";
-        echo "<td><a href='posts.php?delete={$post_id}'>Delete</a></td>";
-        echo "<td><a href='posts.php?source=editPosts&p_id={$post_id}'>Edit</a></td>";
-        echo "</tr>";
-
     }
 }
 

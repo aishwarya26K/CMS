@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
 
@@ -37,12 +38,24 @@ while($row = mysqli_fetch_assoc($select_all_categories_query))
                     <li>
                         <a href="admin">Admin</a>
                     </li>
-                    <!-- <li>
-                        <a href="#">Services</a>
-                    </li>
                     <li>
-                        <a href="#">Contact</a>
-                    </li> -->
+                        <a href="Registration.php">Registration</a>
+                    </li>
+
+<?php
+
+if(isset($_SESSION['user_role']))
+{
+    if(isset($_GET['p_id']))
+    {
+        $post_id = $_GET['p_id'];
+        echo "<li><a href='admin/posts.php?source=editPosts&p_id={$post_id}'>Edit Post</a></li>";
+    }
+}
+
+
+?>                    
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

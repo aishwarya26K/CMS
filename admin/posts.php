@@ -15,7 +15,7 @@
                     <div class="col-lg-12 table-responsive">
                         <h1 class="page-header">
                             Welcome to Admin
-                            <small>Author</small>
+                            <small><?php echo $_SESSION['username'] ?></small>
                         </h1>
                         
 <?php
