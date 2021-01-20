@@ -31,6 +31,8 @@ if(isset($_POST['login']))
         $db_user_role = $row['user_role'];
     }
 
+    $password = crypt($password, $db_user_password);
+
     if($username === $db_username && $password === $db_user_password)
     {
         $_SESSION['username'] = $db_username;   //assignning db values to a session variable
@@ -39,14 +41,11 @@ if(isset($_POST['login']))
         $_SESSION['user_role'] = $db_user_role;
 
         header("Location:../admin");
-        exit;
-        
     }
 
     else
     {
         header("Location:../index.php");
-        exit;
     }
 }
 

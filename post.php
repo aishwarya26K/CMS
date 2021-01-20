@@ -44,16 +44,18 @@ while($row = mysqli_fetch_assoc($select_all_posts_query))
                 <h2>
                     <a href="#"><?php echo $post_title; ?></a>
                 </h2>
+
                 <p class="lead">
                     by <a href="index.php"><?php echo $post_author; ?></a>
                 </p>
+
                 <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
                 <hr>
+
                 <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
                 <hr>
+                
                 <p><?php echo $post_content; ?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
                 <hr>
 
 <?php } ?>
@@ -72,22 +74,7 @@ if(isset($_POST['post_comment']))
     $comment_email = $_POST['comment_email'];
     $comment_content = $_POST['comment_content'];
 
-    if($comment_author == "" || empty($comment_author))
-    {
-        echo "this field should not be empty"."<br>";
-    }
-
-    if($comment_email == "" || empty($comment_email))
-    {
-        echo "this field should not be empty"."<br>";
-    }
-
-    if($comment_content == "" || empty($comment_content))
-    {
-        echo "this field should not be empty"."<br>";
-    }
-
-    else
+    if(!empty($comment_author) && !empty($comment_email) && !empty($comment_content))
     {
 
         $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
@@ -117,8 +104,10 @@ if(isset($_POST['post_comment']))
         header("Location: " . $uri); exit;
 
     }
-
-
+    else
+    {
+        echo "<script>alert('Fields cannot be empty')</script>";
+    }
 }
 
 ?>

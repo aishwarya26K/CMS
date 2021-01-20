@@ -76,31 +76,29 @@ if(isset($_POST['update_post']))
             $post_image = $row['post_image'];
         }
     }
+    
 
-    else
+    $query = "UPDATE posts SET ";
+    $query .= "post_title = '{$post_title}', ";
+    $query .= "post_category_id = '{$post_category_id}', ";
+    $query .= "post_date = now(), ";
+    $query .= "post_author = '{$post_author}', ";
+    $query .= "post_status = '{$post_status}', ";
+    $query .= "post_tags = '{$post_tags}', ";
+    $query .= "post_content = '{$post_content}', ";
+    $query .= "post_image = '{$post_image}' ";
+    $query .= "WHERE post_id = {$the_post_id} ";
+
+    $update_post_query = mysqli_query($conn, $query);
+
+    if(!$update_post_query)
     {
-
-        $query = "UPDATE posts SET ";
-        $query .= "post_title = '{$post_title}', ";
-        $query .= "post_category_id = '{$post_category_id}', ";
-        $query .= "post_date = now(), ";
-        $query .= "post_author = '{$post_author}', ";
-        $query .= "post_status = '{$post_status}', ";
-        $query .= "post_tags = '{$post_tags}', ";
-        $query .= "post_content = '{$post_content}', ";
-        $query .= "post_image = '{$post_image}' ";
-        $query .= "WHERE post_id = {$post_id} ";
-    
-        $update_post_query = mysqli_query($conn, $query);
-    
-        if(!$update_post_query)
-        {
-            die("QUERY FAILED" . mysqli_error_list($conn));
-        }
-        else{
-            echo "Updated succesfully";
-        }
+        die("QUERY FAILED" . mysqli_error_list($conn));
     }
+    else{
+        echo "<div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'><p class='errorMsg'><strong>Post Updated: </strong>" . " " . "<a href='../post.php?p_id={$the_post_id}'>View Post</a> or <a href='posts.php'>Edit More Posts</a></p></div>";
+    }
+
 }
 ?>
 
@@ -145,10 +143,27 @@ while($row = mysqli_fetch_assoc($select_categories))
         <input value="<?php echo $post_author; ?>" type="text" class="form-control" name="post_author" id="post_author">
     </div>
 
+
     <div class="form-group">
-        <label for="post_status">Post Status</label>
-        <input value="<?php echo $post_status; ?>" type="text" class="form-control" name="post_status" id="post_status">
+        <label for="post_status">Post Status</label><br>
+        <select name="post_status" id="post_status">
+            <option value="<?php echo $post_status ?>"><?php echo $post_status; ?></option>
+            
+<?php
+
+if($post_status == 'published')
+{
+    echo "<option value='draft'>Draft</option>";
+}
+else
+{
+    echo "<option value='published'>Publish</option>";
+}
+
+?>
+        </select>
     </div>
+
 
     <div class="form-group">
         <label for="post_image">Post Image</label><br>
@@ -164,7 +179,7 @@ while($row = mysqli_fetch_assoc($select_categories))
 
     <div class="form-group">
         <label for="post_content">Post Content</label>
-        <textarea class="form-control" name="post_content" id="post_content" cols="30" rows="10">
+        <textarea class="form-control" name="post_content" id="body" cols="30" rows="10">
             <?php echo $post_content; ?>
         </textarea>
     </div>
