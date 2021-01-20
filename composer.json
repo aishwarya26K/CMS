@@ -1,0 +1,12 @@
+{
+    "name": "aishwarya/cms",
+    "description": "This is a cms project for handling post.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Aishwarya Singh",
+            "email": "aishwaryasingh16k@gmail.com"
+        }
+    ],
+    "require": {}
+}

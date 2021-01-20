@@ -1,3 +1,8 @@
+<?php
+if(file_exists('env.php')) {
+    include 'env.php';
+}
+?>
 <?php include "includes/db.php"; ?>
 
 <?php include "includes/header.php"; ?>
