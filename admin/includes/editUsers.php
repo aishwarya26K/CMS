@@ -24,6 +24,7 @@ if(isset($_GET['edit']))
 
 if(isset($_POST['edit_user']))
 {
+    $is_valid = true;
     $username = $_POST['username'];
     $user_password = $_POST['user_password'];
     $user_firstname = $_POST['user_firstname'];
@@ -35,35 +36,35 @@ if(isset($_POST['edit_user']))
 
     if($user_firstname == "" || empty($user_firstname))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($user_lastname == "" || empty($user_lastname))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($user_role == "" || empty($user_role))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($username == "" || empty($username))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($user_email == "" || empty($user_email))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($user_password == "" || empty($user_password))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
-    else
+    if($is_valid)
     {
         # Fetch the salt
         $query = "SELECT randSalt FROM users";
@@ -93,16 +94,45 @@ if(isset($_POST['edit_user']))
 
         if(!$update_user_query)
         {
-            die("QUERY FAILED" . mysqli_error($conn));
+            $_SESSION['editUserSuccess'] = false;
         }
         else{
-            echo "Updated succesfully";
+            $_SESSION['editUserSuccess'] = true;
         }
 
+    }
+    else
+    {
+        $_SESSION['editUserSuccess'] = false;
     }
 
 }
 
+
+if (isset($_SESSION['editUserSuccess']) && $_SESSION['editUserSuccess']) {
+?>
+    <div class='alert alert-success alert-dismissible' >
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p class='errorMsg'>
+            <strong>User Edited: </strong>&nbsp;<a href='users.php'>View users</a>
+        </p>
+    </div>
+
+<?php
+    unset($_SESSION['editUserSuccess']);
+} 
+elseif(isset($_SESSION['editUserSuccess']) && !$_SESSION['editUserSuccess'])
+{
+?>
+    <div class='alert alert-warning alert-dismissible'>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p class='errorMsg'>
+            Failed to edit user. Please try again!
+        </p>
+    </div>
+<?php
+    unset($_SESSION['editUserSuccess']);
+}
 ?>
 
 <h3>Edit Users</h3>

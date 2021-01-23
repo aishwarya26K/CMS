@@ -17,3 +17,8 @@ footer {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.post-content-view {
+    height: 100%;
+    word-break: break-all;
+}

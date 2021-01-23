@@ -25,6 +25,7 @@ while($row = mysqli_fetch_assoc($select_posts_by_id))
 
 if(isset($_POST['update_post']))
 {
+    $is_valid = true;
     $post_author = $_POST['post_author'];
     $post_title = $_POST['post_title'];
     $post_category_id = $_POST['post_category'];
@@ -38,32 +39,32 @@ if(isset($_POST['update_post']))
 
     if($post_title == "" || empty($post_title))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($post_category_id == "" || empty($post_category_id))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($post_author == "" || empty($post_author))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($post_status == "" || empty($post_status))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($post_tags == "" || empty($post_tags))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if($post_content == "" || empty($post_content))
     {
-        echo "this field should not be empty"."<br>";
+        $is_valid = false;
     }
 
     if(empty($post_image))
@@ -77,28 +78,57 @@ if(isset($_POST['update_post']))
         }
     }
     
-
-    $query = "UPDATE posts SET ";
-    $query .= "post_title = '{$post_title}', ";
-    $query .= "post_category_id = '{$post_category_id}', ";
-    $query .= "post_date = now(), ";
-    $query .= "post_author = '{$post_author}', ";
-    $query .= "post_status = '{$post_status}', ";
-    $query .= "post_tags = '{$post_tags}', ";
-    $query .= "post_content = '{$post_content}', ";
-    $query .= "post_image = '{$post_image}' ";
-    $query .= "WHERE post_id = {$the_post_id} ";
-
-    $update_post_query = mysqli_query($conn, $query);
-
-    if(!$update_post_query)
+    if($is_valid)
     {
-        die("QUERY FAILED" . mysqli_error_list($conn));
-    }
-    else{
-        echo "<div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'><p class='errorMsg'><strong>Post Updated: </strong>" . " " . "<a href='../post.php?p_id={$the_post_id}'>View Post</a> or <a href='posts.php'>Edit More Posts</a></p></div>";
-    }
+        $query = "UPDATE posts SET ";
+        $query .= "post_title = '{$post_title}', ";
+        $query .= "post_category_id = '{$post_category_id}', ";
+        $query .= "post_date = now(), ";
+        $query .= "post_author = '{$post_author}', ";
+        $query .= "post_status = '{$post_status}', ";
+        $query .= "post_tags = '{$post_tags}', ";
+        $query .= "post_content = '{$post_content}', ";
+        $query .= "post_image = '{$post_image}' ";
+        $query .= "WHERE post_id = {$the_post_id} ";
 
+        $update_post_query = mysqli_query($conn, $query);
+
+        $_SESSION['created_post_id'] = $the_post_id;
+
+        if(!$update_post_query)
+        {
+            $_SESSION['postEdited'] = false;
+        } else {
+            $_SESSION['postEdited'] = true;
+        }
+    }
+    else 
+    {
+        $_SESSION['postEdited'] = false;
+    }
+}
+
+if (isset($_SESSION['postEdited']) && $_SESSION['postEdited']) {
+?>
+    <div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'>
+        <p class='errorMsg'>
+            <strong>Post Created! </strong><a href='../post.php?p_id=<?php echo $_SESSION['created_post_id'] ?>'>View Post</a> or <a href='posts.php'>Edit More Posts</a>
+        </p>
+    </div>
+<?php
+    unset($_SESSION['postEdited']);
+    unset($_SESSION['created_post_id']);
+} elseif (isset($_SESSION['postEdited']) && !$_SESSION['postEdited']) {
+?>
+
+    <div class='alert alert-warning alert-dismissible'>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p class='errorMsg'>
+            Failed to edit post. Please try again!
+        </p>
+    </div>
+<?php
+    unset($_SESSION['postEdited']);
 }
 ?>
 

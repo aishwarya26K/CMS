@@ -21,7 +21,7 @@ if(file_exists('env.php')) {
 
 <?php
 
-$query = "SELECT * FROM posts ";
+$query = "SELECT * FROM posts ORDER by post_id DESC ";
 
 $select_all_posts_query = mysqli_query($conn, $query);
 
@@ -41,10 +41,10 @@ while($row = mysqli_fetch_assoc($select_all_posts_query))
     
 ?>
 
-    <h1 class="page-header">
+    <!-- <h1 class="page-header">
         Page Heading
         <small>Secondary Text</small>
-    </h1>
+    </h1> -->
 
     <!-- First Blog Post -->
     <h2>
