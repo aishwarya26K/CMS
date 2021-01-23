@@ -20,7 +20,34 @@
                         
                         <div class="col-xs-6">
 
-<?php addCategories(); ?>
+<?php 
+
+addCategories(); 
+
+if (isset($_SESSION['addCategories']) && $_SESSION['addCategories']) 
+{
+    ?>
+        <div class='alert alert-success alert-dismissible'>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p class='errorMsg'>
+                <strong>Category Added </strong>
+            </p>
+        </div>
+    <?php
+        unset($_SESSION['addCategories']);
+    } elseif (isset($_SESSION['addCategories']) && !$_SESSION['addCategories']) {
+    ?>
+    
+        <div class='alert alert-warning alert-dismissible'>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p class='errorMsg'>
+                Failed to add Category. Please try again!
+            </p>
+        </div>
+    <?php
+        unset($_SESSION['addCategories']);
+    }
+    ?>
 
 
                             <form action="" method="post">
@@ -54,7 +81,8 @@ if(isset($_GET['edit']))
                                     <tr>
                                         <th>Id</th>
                                         <th>Category</th>
-                                        <th></th>
+                                        <th>Delete</th>
+                                        <th>Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>

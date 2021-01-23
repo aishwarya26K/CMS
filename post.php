@@ -40,10 +40,6 @@ while($row = mysqli_fetch_assoc($select_all_posts_query))
     
 ?>
 
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
 
                 <!-- First Blog Post -->
                 <h2>
@@ -60,7 +56,7 @@ while($row = mysqli_fetch_assoc($select_all_posts_query))
                 <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
                 <hr>
                 
-                <p><?php echo $post_content; ?></p>
+                <div class="post-content-view"><?php echo $post_content; ?></div>
                 <hr>
 
 <?php } ?>

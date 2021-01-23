@@ -1,4 +1,28 @@
-<?php addPosts(); ?>
+<?php
+addPosts();
+if (isset($_SESSION['addPostStatus']) && $_SESSION['addPostStatus']) {
+?>
+    <div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'>
+        <p class='errorMsg'>
+            <strong>Post Created! </strong><a href='../post.php?p_id=<?php echo $_SESSION['created_post_id'] ?>'>View Post</a> or <a href='posts.php'>Edit More Posts</a>
+        </p>
+    </div>
+<?php
+    unset($_SESSION['addPostStatus']);
+    unset($_SESSION['created_post_id']);
+} elseif (isset($_SESSION['addPostStatus']) && !$_SESSION['addPostStatus']) {
+?>
+
+    <div class='alert alert-warning alert-dismissible'>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p class='errorMsg'>
+            Failed to add post. Please try again!
+        </p>
+    </div>
+<?php
+    unset($_SESSION['addPostStatus']);
+}
+?>
 
 
 <h3>Add Posts</h3>
@@ -12,26 +36,24 @@
     <div class="form-group">
         <label for="post_category">Post Category</label><br>
         <select name="post_category" id="post_category">
-<?php
+            <?php
 
-global $conn;
-$query = "SELECT * FROM categories ";
-$select_categories = mysqli_query($conn, $query);
+            global $conn;
+            $query = "SELECT * FROM categories ";
+            $select_categories = mysqli_query($conn, $query);
 
-if(!$select_categories)
-{
-    die("QUERY FAILED" . mysqli_error_list($conn));
-}
+            if (!$select_categories) {
+                die("QUERY FAILED" . mysqli_error_list($conn));
+            }
 
-while($row = mysqli_fetch_assoc($select_categories))
-{
-    $cat_id = $row['cat_id'];
-    $cat_title = $row['cat_title'];
+            while ($row = mysqli_fetch_assoc($select_categories)) {
+                $cat_id = $row['cat_id'];
+                $cat_title = $row['cat_title'];
 
-    echo "<option value='{$cat_id}'>{$cat_title}</option>";
-}
+                echo "<option value='{$cat_id}'>{$cat_title}</option>";
+            }
 
-?>
+            ?>
         </select>
     </div>
 

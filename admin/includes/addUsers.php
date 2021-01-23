@@ -1,4 +1,31 @@
-<?php addUsers(); ?>
+<?php
+addUsers();
+
+if (isset($_SESSION['userAddSuccess']) && $_SESSION['userAddSuccess']) {
+?>
+    <div class='alert alert-success alert-dismissible' >
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p class='errorMsg'>
+            <strong>User added: </strong>&nbsp;<a href='users.php'>View users</a>
+        </p>
+    </div>
+
+<?php
+    unset($_SESSION['userAddSuccess']);
+} 
+elseif(isset($_SESSION['userAddSuccess']) && !$_SESSION['userAddSuccess'])
+{
+?>
+    <div class='alert alert-warning alert-dismissible'>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p class='errorMsg'>
+            Failed to add user. Please try again!
+        </p>
+    </div>
+<?php
+    unset($_SESSION['userAddSuccess']);
+}
+?>
 
 
 <h3>Add Users</h3>
@@ -17,13 +44,13 @@
     <div class="form-group">
         <label for="user_role">Role</label><br>
         <select name="user_role" id="user_role">
-            <option value="subscriber">Select Options</option>
-            <option value="admin">Admin</option>
+            <option value="Subscriber">Select Options</option>
+            <option value="Admin">Admin</option>
             <option value="subscriber">Subscriber</option>
         </select>
     </div>
 
-    
+
 
     <!-- <div class="form-group">
         <label for="post_image">Post Image</label>

@@ -74,6 +74,7 @@ function addUsers()
     global $conn;
     if(isset($_POST['create_user']))
     {
+        $is_valid = true;
         // $user_id = $_POST['user_id'];
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
@@ -91,35 +92,35 @@ function addUsers()
 
         if($user_firstname == "" || empty($user_firstname))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
     
         if($user_lastname == "" || empty($user_lastname))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
     
         if($user_role == "" || empty($user_role))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
     
         if($username == "" || empty($username))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
     
         if($user_email == "" || empty($user_email))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
     
         if($user_password == "" || empty($user_password))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
-        else
+        if($is_valid)
         {
 
             $query = "INSERT INTO users(user_firstname, user_lastname,
@@ -130,16 +131,18 @@ function addUsers()
     
             $create_user_query = mysqli_query($conn, $query);
 
-            echo "<div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'><p class='errorMsg'><strong>User added: </strong>" . " " . "<a href='users.php'>View users</a></p></div>";
-
             if(!$create_user_query)
             {
-                die("QUERY FAILED" . mysqli_error($conn));
+                $_SESSION['userAddSuccess'] = false;
+            } else {
+                $_SESSION['userAddSuccess'] = true;
             }
 
             header("Location: users.php?source=addUsers ");
             exit;
 
+        } else {
+            $_SESSION['userAddSuccess'] = false;
         }
     }
 }
@@ -323,13 +326,14 @@ function addCategories()
     global $conn;
     if(isset($_POST['submit']))
     {
+        $is_valid = true;
         $cat_title = $_POST['cat_title'];
 
         if($cat_title == "" || empty($cat_title))
         {
-            echo "this field should not be empty";
+            $is_valid = false;
         }
-        else
+        if($is_valid)
         {
 
             $query = "INSERT INTO categories(cat_title) ";
@@ -342,12 +346,18 @@ function addCategories()
 
             if(!$create_category_query)
             {
-                die("QUERY FAILED" . mysqli_error($conn));
+                $_SESSION['addCategories'] = false;
+            }
+            else
+            {
+                $_SESSION['addCategories'] = true;
             }
 
         }
+        else {
+            $_SESSION['addCategories'] = false;
+        }
     }
-
 }
 
 //find all categories
@@ -427,6 +437,7 @@ function addPosts()
     global $conn;
     if(isset($_POST['create_post']))
     {
+        $is_valid = true;
         $post_title = $_POST['post_title'];
         $post_author = $_POST['post_author'];
         $post_category_id = $_POST['post_category'];
@@ -444,40 +455,40 @@ function addPosts()
 
         if($post_title == "" || empty($post_title))
         {
-            echo "this field should not be empty"."<br>";
+           $is_valid = false;
         }
 
         if($post_category_id == "" || empty($post_category_id))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
         if($post_author == "" || empty($post_author))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
         if($post_status == "" || empty($post_status))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
         if(empty($post_image))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
         if($post_tags == "" || empty($post_tags))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
         if($post_content == "" || empty($post_content))
         {
-            echo "this field should not be empty"."<br>";
+            $is_valid = false;
         }
 
-        else
+        if($is_valid)
         {
             $query = "INSERT INTO posts(post_category_id, post_title, post_author,
             post_date, post_image, post_content, post_tags, post_status) ";
@@ -488,18 +499,20 @@ function addPosts()
             $add_posts_query = mysqli_query($conn, $query);
 
             $the_post_id = mysqli_insert_id($conn);
-
+            $_SESSION['created_post_id'] = $the_post_id;
             if(!$add_posts_query)
             {
-                die("QUERY FAILED" . mysqli_error($conn));
+                $_SESSION['addPostStatus'] = false;
             }
             else
             {
-                echo "<div class='alert alert-success' role='alert' style='width:-webkit-fit-content;width:-moz-fit-content;  width: fit-content;margin:1em auto 1em 0;'><p class='errorMsg'><strong>Post Created. </strong>" . " " . "<a href='../post.php?p_id={$the_post_id}'>View Post</a> or <a href='posts.php'>Edit More Posts</a></p></div>";
+                $_SESSION['addPostStatus'] = true;
             }
 
             header("Location: posts.php?source=addPosts "); 
             exit;
+        } else {
+            $_SESSION['addPostStatus'] = false;
         }
     }
 }
