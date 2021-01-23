@@ -21,9 +21,8 @@ if(file_exists('env.php')) {
 
 <?php
 
-if(isset($_GET['p_id']))
+if(isset($_GET['author']))
 {
-    $post_id = $_GET['p_id'];
     $the_post_author = $_GET['author'];
 }
 
@@ -38,13 +37,8 @@ while($row = mysqli_fetch_assoc($select_all_posts_query))
     $post_date = $row['post_date'];
     $post_image = $row['post_image'];
     $post_content = $row['post_content'];
-    
+    $post_id = $row['post_id'];    
 ?>
-
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
 
                 <!-- First Blog Post -->
                 <h2>
